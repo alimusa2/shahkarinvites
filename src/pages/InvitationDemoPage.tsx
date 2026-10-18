@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { InvitationLoader } from '../components/InvitationLoader';
-import { InvitationEnvelope } from '../components/InvitationEnvelope';
+import { InvitationVideoPlayer } from '../components/InvitationVideoPlayer';
 import { InvitationExperience } from '../components/InvitationExperience';
-import { TEMPLATES } from '../data/templates';
 
 export const InvitationDemoPage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  // Stages: 'loading' -> 'envelope' -> 'opened'
-  const [stage, setStage] = useState<'loading' | 'envelope' | 'opened'>('loading');
+  // Stages: 'video' (intro/loading video) -> 'opened' (full invitation suite & card)
+  const [stage, setStage] = useState<'video' | 'opened'>('video');
 
   const theme = searchParams.get('theme') || 'emerald-elegance';
   const bride = searchParams.get('bride') || 'Ayesha';
   const groom = searchParams.get('groom') || 'Hamza';
   const venue = searchParams.get('venue') || 'The Grand Palace';
   const customDate = searchParams.get('date');
-
-  const selectedTemplate = TEMPLATES.find((t) => t.id === theme) || TEMPLATES[0];
 
   const customData = {
     brideName: bride,
@@ -25,41 +21,25 @@ export const InvitationDemoPage: React.FC = () => {
     ...(customDate ? { date: customDate } : {}),
   };
 
-  const handleAssetsLoaded = () => {
-    setStage('envelope');
-  };
-
-  const handleEnvelopeComplete = () => {
+  const handleVideoComplete = () => {
     setStage('opened');
   };
 
   const handleReplay = () => {
-    // Replay sequence from Stage 2 (Envelope) without resetting any user RSVP data
-    setStage('envelope');
+    setStage('video');
   };
 
   return (
     <main className="min-h-screen bg-background-main selection:bg-gold-champagne/30 selection:text-gold-light overflow-x-hidden">
-      {/* Stage 1: Refined loading screen preloading essential assets */}
-      {stage === 'loading' && (
-        <InvitationLoader
-          onLoaded={handleAssetsLoaded}
-          cardImage={selectedTemplate.image}
-          coupleImage="/assets/couple.jpg"
+      {/* Intro & Loading Video Stage */}
+      {stage === 'video' && (
+        <InvitationVideoPlayer
+          onComplete={handleVideoComplete}
+          videoSrc="/lv_0_20261018142737.mp4"
         />
       )}
 
-      {/* Stage 2 & 3: Envelope Reveal & 6-step Interactive Opening Animation */}
-      {stage === 'envelope' && (
-        <InvitationEnvelope
-          onOpenComplete={handleEnvelopeComplete}
-          brideName={bride}
-          groomName={groom}
-          themeId={theme}
-        />
-      )}
-
-      {/* Existing Complete Wedding Invitation Experience (Preserved 100%) */}
+      {/* Complete Wedding Invitation Experience & Cards */}
       {stage === 'opened' && (
         <div className="animate-fade-in">
           <InvitationExperience
