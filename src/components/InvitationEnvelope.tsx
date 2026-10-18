@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Sparkles, Heart } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { TEMPLATES } from '../data/templates';
 
@@ -8,6 +8,7 @@ interface InvitationEnvelopeProps {
   brideName?: string;
   groomName?: string;
   themeId?: string;
+  autoPlay?: boolean;
 }
 
 export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
@@ -15,11 +16,13 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
   brideName = 'Ayesha',
   groomName = 'Hamza',
   themeId = 'emerald-elegance',
+  autoPlay = true,
 }) => {
   // Stage sequence: 'idle' -> 'glowing' -> 'flap-opening' -> 'card-rising' -> 'card-expanding' -> 'completed'
   const [stage, setStage] = useState<'idle' | 'glowing' | 'flap-opening' | 'card-rising' | 'card-expanding' | 'completed'>('idle');
   const [tilt, setTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const envelopeRef = useRef<HTMLDivElement>(null);
+  const hasTriggeredRef = useRef(false);
 
   const selectedTemplate = TEMPLATES.find((t) => t.id === themeId) || TEMPLATES[0];
 
@@ -37,51 +40,74 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
     setTilt({ x: 0, y: 0 });
   };
 
-  const handleOpen = () => {
-    if (stage !== 'idle') return;
+  const startOpeningAnimation = () => {
+    if (hasTriggeredRef.current) return;
+    hasTriggeredRef.current = true;
 
-    // Step 1: The wax seal subtly glows (0ms)
+    // Step 1: The wax seal subtly glows with golden shimmer (0ms)
     setStage('glowing');
 
-    // Trigger subtle golden micro-sparkles
+    // Trigger golden micro-sparkles from wax seal position
     if (envelopeRef.current) {
       const rect = envelopeRef.current.getBoundingClientRect();
       const originX = (rect.left + rect.width / 2) / window.innerWidth;
       const originY = (rect.top + rect.height / 2) / window.innerHeight;
 
       confetti({
-        particleCount: 30,
-        spread: 45,
-        startVelocity: 12,
+        particleCount: 35,
+        spread: 50,
+        startVelocity: 14,
         origin: { x: originX, y: originY },
         colors: ['#D6B777', '#F3E5AB', '#A98A4F', '#ffffff'],
-        ticks: 60,
-        gravity: 0.9,
+        ticks: 70,
+        gravity: 0.85,
         shapes: ['circle'],
-        scalar: 0.7,
+        scalar: 0.75,
       });
     }
 
-    // Step 2 & 3: Flap opens in 3D & warm golden light appears inside (350ms)
+    // Step 2 & 3: Flap opens in 3D & warm golden light radiates inside (400ms)
     setTimeout(() => {
       setStage('flap-opening');
-    }, 350);
+    }, 400);
 
-    // Step 4: Invitation card rises smoothly from envelope (850ms)
+    // Step 4: The invitation card rises smoothly from the envelope (950ms)
     setTimeout(() => {
       setStage('card-rising');
-    }, 850);
+    }, 950);
 
-    // Step 5: Card moves toward the viewer with subtle scale & opacity transition (1650ms)
+    // Step 5: Card moves toward the viewer with subtle scale & opacity transition (1800ms)
     setTimeout(() => {
       setStage('card-expanding');
-    }, 1650);
+    }, 1800);
 
-    // Step 6: Refined transition reveals the existing complete wedding invitation (2150ms)
+    // Step 6: Refined transition reveals the complete wedding invitation (2400ms)
     setTimeout(() => {
       setStage('completed');
-      setTimeout(onOpenComplete, 350);
-    }, 2150);
+      setTimeout(onOpenComplete, 400);
+    }, 2400);
+  };
+
+  // Automatically start opening animation when preview loads
+  useEffect(() => {
+    if (autoPlay) {
+      const autoTimer = setTimeout(() => {
+        startOpeningAnimation();
+      }, 350);
+      return () => clearTimeout(autoTimer);
+    }
+  }, [autoPlay]);
+
+  // Allow clicking anywhere to skip or accelerate directly into the invitation
+  const handleQuickAdvance = () => {
+    if (stage === 'completed') return;
+    if (stage === 'idle') {
+      startOpeningAnimation();
+    } else {
+      // If already animating, fast forward smoothly to reveal
+      setStage('completed');
+      onOpenComplete();
+    }
   };
 
   const isFlapOpen = stage === 'flap-opening' || stage === 'card-rising' || stage === 'card-expanding' || stage === 'completed';
@@ -90,7 +116,8 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
 
   return (
     <div
-      className={`relative w-full min-h-[100dvh] flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#050E09] via-[#091D13] to-[#040906] overflow-hidden select-none transition-all duration-700 ${
+      onClick={handleQuickAdvance}
+      className={`relative w-full min-h-[100dvh] flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#050E09] via-[#091D13] to-[#040906] overflow-hidden select-none transition-all duration-700 cursor-pointer ${
         stage === 'completed' ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
       }`}
     >
@@ -128,17 +155,12 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
         ref={envelopeRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onClick={handleOpen}
-        className="relative w-[min(92vw,440px)] h-[min(62vw,285px)] max-h-[285px] cursor-pointer group perspective-1000 my-3 touch-manipulation transition-transform duration-200 ease-out"
+        className="relative w-[min(92vw,440px)] h-[min(62vw,285px)] max-h-[285px] group perspective-1000 my-3 touch-manipulation transition-transform duration-200 ease-out"
         style={{
           transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         }}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleOpen();
-        }}
-        aria-label="Open wedding invitation envelope"
+        role="region"
+        aria-label="Opening wedding invitation envelope"
       >
         {/* Soft Golden Ambient Glow behind Envelope */}
         <div className="absolute -inset-4 bg-gradient-to-r from-gold-champagne/10 via-emerald-500/10 to-gold-champagne/10 rounded-3xl blur-2xl opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -154,7 +176,7 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
             {/* Golden Damask Pattern */}
             <div className="w-full h-full border border-gold-border/30 rounded-xl bg-[radial-gradient(#D6B777_1.2px,transparent_1.2px)] [background-size:14px_14px] opacity-40" />
 
-            {/* Step 3: Warm radiant inner glow */}
+            {/* Warm radiant inner glow */}
             <div
               className={`absolute top-0 inset-x-8 h-24 bg-gold-champagne/30 rounded-full blur-xl transition-opacity duration-700 ${
                 isFlapOpen ? 'opacity-100 scale-110' : 'opacity-0 scale-75'
@@ -299,13 +321,13 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
           className={`absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 transition-all duration-500 ease-out ${
             stage !== 'idle' && stage !== 'glowing'
               ? 'opacity-0 scale-150 rotate-12 pointer-events-none'
-              : 'opacity-100 scale-100 group-hover:scale-110'
+              : 'opacity-100 scale-100'
           }`}
         >
           {/* Subtle Golden Glow aura (Step 1) */}
           <div
             className={`absolute -inset-3 rounded-full bg-gradient-to-r from-gold-light via-gold-champagne to-gold-muted blur-md transition-opacity duration-300 pointer-events-none ${
-              stage === 'glowing' ? 'opacity-100 animate-pulse' : 'opacity-0 group-hover:opacity-75'
+              stage === 'glowing' ? 'opacity-100 animate-pulse' : 'opacity-40'
             }`}
           />
 
@@ -327,19 +349,23 @@ export const InvitationEnvelope: React.FC<InvitationEnvelopeProps> = ({
 
       </div>
 
-      {/* "Tap to Open" Action Button */}
+      {/* Elegant Real-Time Animation Status Indicator (No manual tap button needed) */}
       <div className="mt-8 relative z-20 flex flex-col items-center">
-        <button
-          onClick={handleOpen}
-          disabled={stage !== 'idle'}
-          className="px-9 py-3.5 rounded-full bg-gradient-to-r from-gold-light via-gold-champagne to-gold-muted hover:brightness-110 text-background-main font-semibold text-xs uppercase tracking-widest shadow-gold-md hover:shadow-gold-lg transition-all duration-300 flex items-center gap-2 group/btn active:scale-95"
-        >
-          <Sparkles size={14} className="transition-transform group-hover/btn:rotate-45" />
-          <span>{stage !== 'idle' ? 'Opening Invitation...' : 'Tap to Open'}</span>
-        </button>
+        <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-gold-border/40 bg-black/40 backdrop-blur-sm text-gold-champagne text-xs uppercase tracking-widest font-sans">
+          <Sparkles size={13} className="animate-spin-slow" />
+          <span>
+            {stage === 'idle'
+              ? 'Unfolding Wedding Invitation...'
+              : stage === 'glowing'
+              ? 'Unsealing Imperial Wax...'
+              : stage === 'flap-opening'
+              ? 'Opening Folio...'
+              : 'Presenting Wedding Suite...'}
+          </span>
+        </div>
 
-        <span className="text-[11px] text-text-muted mt-3 italic">
-          Touch or click the envelope to reveal the wedding stationery
+        <span className="text-[10px] text-text-muted mt-2.5 italic">
+          Tap anywhere to enter immediately
         </span>
       </div>
 
