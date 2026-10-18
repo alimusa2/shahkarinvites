@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   Volume2,
   VolumeX,
   RotateCcw,
   MapPin,
   Calendar,
-  Share2,
   Copy,
   Check,
   Navigation,
-  Clock,
   Sparkles,
   ArrowLeft,
   MessageCircle,
   ExternalLink,
 } from 'lucide-react';
-import { DEMO_INVITATION, InvitationData } from '../data/demoInvitation';
+import { DEMO_INVITATION, type InvitationData } from '../data/demoInvitation';
 import { TEMPLATES } from '../data/templates';
 import { ambientSound } from '../utils/audio';
 import { downloadCalendarIcs, getGoogleCalendarUrl } from '../utils/calendar';
@@ -83,8 +82,7 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
     if (navigator.share) {
       try {
         await navigator.share(shareData);
-      } catch (err) {
-        // User cancelled or fallback
+      } catch {
         copyToClipboard();
       }
     } else {
@@ -103,6 +101,14 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
       `*A Special Wedding Invitation*\n\nTogether with their families, *${data.brideName} & ${data.groomName}* request the pleasure of your company at their wedding celebration on ${data.dateDisplay.dayName}, ${data.dateDisplay.month} ${data.dateDisplay.day}, ${data.dateDisplay.year} at ${data.venue}, ${data.city}.\n\nOpen your interactive digital card here:\n${window.location.href}`
     );
     return `https://api.whatsapp.com/send?text=${text}`;
+  };
+
+  // Reusable scroll reveal configuration
+  const cardAnimation = {
+    initial: { opacity: 0, y: 45, scale: 0.97 },
+    whileInView: { opacity: 1, y: 0, scale: 1 },
+    viewport: { once: true, margin: '-50px' },
+    transition: { duration: 0.85, ease: 'easeOut' as const },
   };
 
   return (
@@ -159,7 +165,8 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
       <div className="max-w-xl mx-auto min-h-screen px-4 pt-20 pb-28 relative z-20">
         
         {/* ================= SCENE 2: MAIN INVITATION CARD ================= */}
-        <div
+        <motion.div
+          {...cardAnimation}
           className="relative rounded-3xl p-6 sm:p-10 text-center border shadow-2xl overflow-hidden mb-12"
           style={{
             backgroundColor: selectedTemplate.theme.cardBg,
@@ -176,9 +183,15 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
           {/* Card Content */}
           <div className="relative z-10 flex flex-col items-center">
             {/* Islamic Calligraphy */}
-            <div className="text-gold-champagne text-base sm:text-xl font-arabic tracking-widest mb-3 opacity-95">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-gold-champagne text-base sm:text-xl font-arabic tracking-widest mb-3 opacity-95"
+            >
               {data.bismillahText}
-            </div>
+            </motion.div>
             <p className="text-[9px] uppercase tracking-[0.25em] text-text-secondary font-sans mb-6">
               {data.bismillahEnglish}
             </p>
@@ -190,15 +203,27 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
 
             {/* Couple Names */}
             <div className="my-2">
-              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-ivory tracking-wide leading-none">
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.94 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="font-serif text-4xl sm:text-5xl md:text-6xl text-ivory tracking-wide leading-none"
+              >
                 {data.brideName}
-              </h1>
+              </motion.h1>
               <div className="font-serif italic text-2xl sm:text-3xl text-gold-champagne my-2">
                 &amp;
               </div>
-              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-ivory tracking-wide leading-none">
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.94 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                className="font-serif text-4xl sm:text-5xl md:text-6xl text-ivory tracking-wide leading-none"
+              >
                 {data.groomName}
-              </h1>
+              </motion.h1>
             </div>
 
             {/* Ornamental Divider */}
@@ -217,7 +242,13 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
             </p>
 
             {/* Date Badge */}
-            <div className="w-full max-w-sm rounded-2xl bg-black/40 border border-gold-border/60 p-4 mb-6 shadow-inner">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="w-full max-w-sm rounded-2xl bg-black/40 border border-gold-border/60 p-4 mb-6 shadow-inner"
+            >
               <div className="flex items-center justify-around text-center">
                 <div>
                   <span className="block text-[9px] tracking-widest text-text-muted uppercase">Day</span>
@@ -240,7 +271,7 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Venue Headline */}
             <div className="flex items-center justify-center gap-1.5 text-ivory mb-1">
@@ -251,10 +282,13 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
               {data.city}, {data.country}
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* ================= SCENE 3: OUR STORY ================= */}
-        <div className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl">
+        <motion.div
+          {...cardAnimation}
+          className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl hover:border-gold-champagne/50 transition-colors"
+        >
           <div className="flex items-center justify-center gap-2 mb-3">
             <span className="w-6 h-[1px] bg-gold-champagne/60" />
             <span className="text-xs uppercase tracking-[0.25em] text-gold-champagne font-medium">
@@ -271,13 +305,20 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
             "{data.storyQuote}"
           </p>
 
-          {/* Couple Photograph in Gold Frame */}
-          <div className="relative max-w-sm mx-auto mb-6 p-2 rounded-2xl bg-gradient-to-br from-gold-light via-gold-champagne to-gold-muted shadow-2xl rotate-[-0.5deg]">
+          {/* Couple Photograph in Gold Frame with 3D Float on Scroll */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: -0.5 }}
+            whileHover={{ scale: 1.03, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' as const }}
+            className="relative max-w-sm mx-auto mb-6 p-2 rounded-2xl bg-gradient-to-br from-gold-light via-gold-champagne to-gold-muted shadow-2xl cursor-pointer"
+          >
             <div className="overflow-hidden rounded-xl aspect-[4/3] bg-black">
               <img
                 src={data.coupleImage}
                 alt={`${data.brideName} and ${data.groomName}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />
             </div>
@@ -285,15 +326,18 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
             <div className="pt-2 pb-1 text-center font-serif italic text-background-main font-semibold text-sm">
               {data.brideName} &amp; {data.groomName} • Always &amp; Forever
             </div>
-          </div>
+          </motion.div>
 
           <p className="text-xs sm:text-sm text-text-secondary font-light max-w-md mx-auto leading-relaxed">
             {data.storyParagraph}
           </p>
-        </div>
+        </motion.div>
 
         {/* ================= SCENE 4: EVENT SCHEDULE ================= */}
-        <div className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl">
+        <motion.div
+          {...cardAnimation}
+          className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl hover:border-gold-champagne/50 transition-colors"
+        >
           <div className="flex items-center justify-center gap-2 mb-3">
             <span className="w-6 h-[1px] bg-gold-champagne/60" />
             <span className="text-xs uppercase tracking-[0.25em] text-gold-champagne font-medium">
@@ -307,10 +351,15 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
           </h2>
 
           <div className="space-y-4 max-w-md mx-auto">
-            {data.schedule.map((item) => (
-              <div
+            {data.schedule.map((item, idx) => (
+              <motion.div
                 key={item.id}
-                className="flex items-center justify-between p-4 rounded-2xl bg-background-main/60 border border-gold-border/30 hover:border-gold-champagne/60 transition-colors"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.02, x: 4 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.15 * (idx + 1), ease: 'easeOut' as const }}
+                className="flex items-center justify-between p-4 rounded-2xl bg-background-main/60 border border-gold-border/30 hover:border-gold-champagne/70 transition-all cursor-pointer"
               >
                 <div className="text-left">
                   <span className="font-serif text-base sm:text-lg text-ivory block">
@@ -325,13 +374,16 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
                     {item.time}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* ================= SCENE 5: VENUE & COUNTDOWN ================= */}
-        <div className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl">
+        <motion.div
+          {...cardAnimation}
+          className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl hover:border-gold-champagne/50 transition-colors"
+        >
           <div className="flex items-center justify-center gap-2 mb-3">
             <span className="w-6 h-[1px] bg-gold-champagne/60" />
             <span className="text-xs uppercase tracking-[0.25em] text-gold-champagne font-medium">
@@ -373,7 +425,9 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
           </div>
 
           {/* View Directions on Google Maps */}
-          <a
+          <motion.a
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.mapQuery)}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -382,11 +436,14 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
             <Navigation size={14} />
             <span>Open Directions in Google Maps</span>
             <ExternalLink size={13} />
-          </a>
-        </div>
+          </motion.a>
+        </motion.div>
 
         {/* ================= SCENE 6: DRESS CODE ================= */}
-        <div className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl">
+        <motion.div
+          {...cardAnimation}
+          className="relative rounded-3xl p-6 sm:p-8 bg-background-card/80 border border-gold-border/30 text-center mb-12 shadow-xl hover:border-gold-champagne/50 transition-colors"
+        >
           <div className="flex items-center justify-center gap-2 mb-3">
             <span className="w-6 h-[1px] bg-gold-champagne/60" />
             <span className="text-xs uppercase tracking-[0.25em] text-gold-champagne font-medium">
@@ -404,13 +461,21 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
           <p className="text-xs text-text-secondary font-light max-w-sm mx-auto">
             {data.dressCodeNote}
           </p>
-        </div>
+        </motion.div>
 
         {/* ================= SCENE 7: RSVP FORM ================= */}
-        <RSVPSection deadline={data.rsvpDeadline} />
+        <motion.div {...cardAnimation}>
+          <RSVPSection deadline={data.rsvpDeadline} />
+        </motion.div>
 
         {/* ================= SCENE 8: FINAL SHARING & ACTIONS ================= */}
-        <div className="text-center pt-8 border-t border-gold-border/30">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center pt-8 border-t border-gold-border/30"
+        >
           <div className="text-gold-champagne text-sm font-arabic mb-2">⚜</div>
           <h3 className="font-serif text-2xl sm:text-3xl text-ivory mb-1">
             Your Presence Will Make Our Day Complete
@@ -422,24 +487,28 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
           {/* Functional Actions Grid */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto mb-8">
             {/* WhatsApp Share */}
-            <a
+            <motion.a
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               href={getWhatsAppShareLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto flex-1 py-3 px-4 rounded-full bg-emerald-950/80 border border-emerald-500/60 hover:bg-emerald-900/60 text-emerald-300 text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+              className="w-full sm:w-auto flex-1 py-3 px-4 rounded-full bg-emerald-950/80 border border-emerald-500/60 hover:bg-emerald-900/60 text-emerald-300 text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors shadow-md"
             >
               <MessageCircle size={15} className="text-emerald-400" />
               <span>Share WhatsApp</span>
-            </a>
+            </motion.a>
 
             {/* Native Share / Copy Link */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={handleShare}
-              className="w-full sm:w-auto flex-1 py-3 px-4 rounded-full bg-background-card border border-gold-border/60 hover:border-gold-champagne text-gold-light text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors"
+              className="w-full sm:w-auto flex-1 py-3 px-4 rounded-full bg-background-card border border-gold-border/60 hover:border-gold-champagne text-gold-light text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-colors shadow-md"
             >
               {copiedLink ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
               <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
-            </button>
+            </motion.button>
           </div>
 
           {/* Add to Calendar Options */}
@@ -485,7 +554,7 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
               </Link>
             </p>
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </div>
