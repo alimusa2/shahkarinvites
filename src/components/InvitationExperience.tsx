@@ -22,6 +22,7 @@ import { ambientSound } from '../utils/audio';
 import { downloadCalendarIcs, getGoogleCalendarUrl } from '../utils/calendar';
 import { RSVPSection } from './RSVPSection';
 import { FloatingPetals } from './FloatingPetals';
+import { LuxuryVenueMap } from './LuxuryVenueMap';
 import { Link } from 'react-router-dom';
 
 interface InvitationExperienceProps {
@@ -37,19 +38,12 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
 }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const [copiedAddress, setCopiedAddress] = useState(false);
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number }>({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
-
-  const handleCopyAddress = () => {
-    navigator.clipboard.writeText(data.mapQuery || `${data.venue}, ${data.city}, ${data.country}`);
-    setCopiedAddress(true);
-    setTimeout(() => setCopiedAddress(false), 2500);
-  };
 
   const selectedTemplate = TEMPLATES.find((t) => t.id === templateId) || TEMPLATES[0];
   const data: InvitationData = { ...DEMO_INVITATION, ...customData };
@@ -411,111 +405,17 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
             {data.city}, {data.country}
           </p>
 
-          {/* Interactive Luxury Styled Map Embed */}
-          <div className="relative mb-6 rounded-2xl overflow-hidden border border-gold-border/50 shadow-2xl bg-black group">
-            {/* Live Map iFrame with dark luxury contrast filter */}
-            <iframe
-              title="Venue Location Map"
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(data.mapQuery || `${data.venue}, ${data.city}, ${data.country}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-              className="w-full h-52 sm:h-64 border-0 opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              style={{
-                filter: 'invert(90%) hue-rotate(180deg) contrast(95%) brightness(90%) saturate(120%)',
-              }}
-            />
-
-            {/* Floating Live Badge Overlay */}
-            <div className="absolute top-3 left-3 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-gold-border/50 text-[11px] text-gold-light tracking-wide shadow-md pointer-events-none">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-medium">Live Venue Map</span>
-            </div>
-
-            {/* Quick Fullscreen / Open Map Pill */}
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.mapQuery || `${data.venue}, ${data.city}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/80 hover:bg-gold-champagne hover:text-background-main backdrop-blur-md border border-gold-border/60 text-[11px] text-gold-light font-medium tracking-wide transition-all shadow-lg"
-            >
-              <Compass size={13} />
-              <span>Expand Map</span>
-              <ExternalLink size={11} />
-            </a>
-          </div>
-
-          {/* Venue Logistics / Professional Details Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 text-left">
-            <div className="p-3.5 rounded-xl bg-background-main/60 border border-gold-border/25 flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-gold-champagne/10 text-gold-champagne shrink-0 mt-0.5">
-                <MapPin size={16} />
-              </div>
-              <div className="min-w-0 flex-1">
-                <span className="text-[10px] uppercase tracking-wider text-gold-champagne/90 font-medium block">
-                  Address
-                </span>
-                <p className="text-xs text-ivory/90 leading-relaxed truncate">
-                  {data.mapQuery}
-                </p>
-                <button
-                  type="button"
-                  onClick={handleCopyAddress}
-                  className="mt-1 text-[11px] text-gold-champagne hover:text-gold-light flex items-center gap-1 font-medium transition-colors cursor-pointer"
-                >
-                  {copiedAddress ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
-                  <span>{copiedAddress ? 'Address Copied!' : 'Copy Address'}</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-background-main/60 border border-gold-border/25 flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-gold-champagne/10 text-gold-champagne shrink-0 mt-0.5">
-                <Car size={16} />
-              </div>
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-gold-champagne/90 font-medium block">
-                  Valet & Parking
-                </span>
-                <p className="text-xs text-ivory/90 leading-relaxed">
-                  Complimentary VIP Valet Available at Main Entrance Gate
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation Apps Button Group */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 mb-6">
-            {/* Google Maps Directions */}
-            <motion.a
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(data.mapQuery)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 w-full py-3 px-4 rounded-full bg-gradient-to-r from-gold-light via-gold-champagne to-gold-muted hover:brightness-110 text-background-main font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-gold-sm"
-            >
-              <Navigation size={14} />
-              <span>Google Maps</span>
-              <ExternalLink size={12} />
-            </motion.a>
-
-            {/* Apple Maps Directions */}
-            <motion.a
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              href={`https://maps.apple.com/?daddr=${encodeURIComponent(data.mapQuery)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 w-full py-3 px-4 rounded-full bg-background-main/80 hover:bg-background-main border border-gold-border/60 text-gold-light font-medium text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md"
-            >
-              <Compass size={14} className="text-gold-champagne" />
-              <span>Apple Maps</span>
-              <ExternalLink size={12} />
-            </motion.a>
-          </div>
+          {/* Bespoke Interactive Haute Venue Map */}
+          <LuxuryVenueMap
+            venue={data.venue}
+            city={data.city}
+            country={data.country}
+            mapQuery={data.mapQuery}
+            themeAccent={selectedTemplate.theme.accent}
+          />
 
           {/* Live Countdown Box */}
-          <div className="p-4 rounded-2xl bg-background-main/70 border border-gold-border/40">
+          <div className="mt-6 p-4 rounded-2xl bg-background-main/70 border border-gold-border/40">
             <span className="text-[10px] uppercase tracking-[0.25em] text-gold-champagne block mb-2 font-medium">
               Counting Down to the Big Day
             </span>
