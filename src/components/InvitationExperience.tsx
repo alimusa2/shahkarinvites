@@ -22,6 +22,7 @@ import { ambientSound } from '../utils/audio';
 import { downloadCalendarIcs, getGoogleCalendarUrl } from '../utils/calendar';
 import { RSVPSection } from './RSVPSection';
 import { FloatingPetals } from './FloatingPetals';
+import { RomanticFloralBorders } from './RomanticFloralBorders';
 import { LuxuryVenueMap } from './LuxuryVenueMap';
 import { Link } from 'react-router-dom';
 
@@ -120,6 +121,7 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
       style={{ backgroundColor: selectedTemplate.theme.bg }}
     >
       <FloatingPetals />
+      <RomanticFloralBorders />
 
       {/* Floating Top Controls Header */}
       <div className="fixed top-4 inset-x-0 z-40 max-w-xl mx-auto px-4 flex items-center justify-between pointer-events-none">
