@@ -24,7 +24,7 @@ export const InvitationVideoPlayer: React.FC<InvitationVideoPlayerProps> = ({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden select-none">
+    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden select-none touch-none overscroll-none">
       {/* Ambient background for desktop viewports */}
       <div className="absolute inset-0 bg-background-main opacity-90 hidden sm:block pointer-events-none" />
       <div className="absolute inset-0 bg-radial-gradient from-emerald-950/40 via-background-main/90 to-black hidden sm:block pointer-events-none" />

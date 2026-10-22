@@ -8,13 +8,9 @@ import {
   Calendar,
   Copy,
   Check,
-  Navigation,
-  Sparkles,
   ArrowLeft,
   MessageCircle,
   ExternalLink,
-  Car,
-  Compass,
 } from 'lucide-react';
 import { DEMO_INVITATION, type InvitationData } from '../data/demoInvitation';
 import { TEMPLATES } from '../data/templates';
@@ -22,7 +18,6 @@ import { ambientSound } from '../utils/audio';
 import { downloadCalendarIcs, getGoogleCalendarUrl } from '../utils/calendar';
 import { RSVPSection } from './RSVPSection';
 import { FloatingPetals } from './FloatingPetals';
-import { RomanticFloralBorders } from './RomanticFloralBorders';
 import { LuxuryVenueMap } from './LuxuryVenueMap';
 import { Link } from 'react-router-dom';
 
@@ -48,6 +43,13 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
 
   const selectedTemplate = TEMPLATES.find((t) => t.id === templateId) || TEMPLATES[0];
   const data: InvitationData = { ...DEMO_INVITATION, ...customData };
+
+  // Always ensure the opened invitation starts from the top card
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   // Countdown timer logic
   useEffect(() => {
@@ -107,12 +109,12 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
     return `https://api.whatsapp.com/send?text=${text}`;
   };
 
-  // Reusable scroll reveal configuration
+  // Reusable scroll reveal configuration - starts gently from top
   const cardAnimation = {
-    initial: { opacity: 0, y: 45, scale: 0.97 },
+    initial: { opacity: 0, y: -20, scale: 0.98 },
     whileInView: { opacity: 1, y: 0, scale: 1 },
-    viewport: { once: true, margin: '-50px' },
-    transition: { duration: 0.85, ease: 'easeOut' as const },
+    viewport: { once: true, margin: '-30px' },
+    transition: { duration: 0.8, ease: 'easeOut' as const },
   };
 
   return (
@@ -121,7 +123,6 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
       style={{ backgroundColor: selectedTemplate.theme.bg }}
     >
       <FloatingPetals />
-      <RomanticFloralBorders />
 
       {/* Floating Top Controls Header */}
       <div className="fixed top-4 inset-x-0 z-40 max-w-xl mx-auto px-4 flex items-center justify-between pointer-events-none">
@@ -171,7 +172,9 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
         
         {/* ================= SCENE 2: MAIN INVITATION CARD ================= */}
         <motion.div
-          {...cardAnimation}
+          initial={{ opacity: 0, y: -24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="relative rounded-3xl p-6 sm:p-10 text-center border shadow-2xl overflow-hidden mb-12"
           style={{
             backgroundColor: selectedTemplate.theme.cardBg,

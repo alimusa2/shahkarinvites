@@ -108,7 +108,7 @@ html, body {
 @keyframes fadeInCard {
   0% {
     opacity: 0;
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(-16px) scale(0.98);
   }
   100% {
     opacity: 1;
