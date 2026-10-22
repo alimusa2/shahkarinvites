@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Volume2,
   VolumeX,
@@ -26,6 +26,51 @@ interface InvitationExperienceProps {
   templateId?: string;
   onReplayEnvelope: () => void;
 }
+
+interface CountdownItemProps {
+  value: number;
+  label: string;
+  isHighlighted?: boolean;
+}
+
+const CountdownItem: React.FC<CountdownItemProps> = ({ value, label, isHighlighted }) => {
+  const formatted = String(value).padStart(2, '0');
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="bg-black/45 rounded-xl p-2.5 border border-gold-border/30 flex flex-col items-center justify-center overflow-hidden shadow-inner backdrop-blur-sm"
+    >
+      <div className="relative h-8 sm:h-9 w-full flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={formatted}
+            initial={{ y: -16, opacity: 0, scale: 0.88 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 16, opacity: 0, scale: 0.88 }}
+            transition={{
+              duration: 0.35,
+              ease: 'easeOut' as const,
+            }}
+            className={`font-serif text-xl sm:text-2xl font-bold block tabular-nums leading-none ${
+              isHighlighted
+                ? 'text-gold-champagne drop-shadow-[0_0_8px_rgba(214,183,119,0.35)]'
+                : 'text-ivory'
+            }`}
+          >
+            {formatted}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+      <span className="text-[9px] uppercase tracking-wider text-text-muted mt-1 font-medium">
+        {label}
+      </span>
+    </motion.div>
+  );
+};
 
 export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
   customData,
@@ -109,9 +154,9 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
     return `https://api.whatsapp.com/send?text=${text}`;
   };
 
-  // Reusable scroll reveal configuration - starts gently from top
+  // Reusable scroll reveal configuration - smooth luxury fade-in
   const cardAnimation = {
-    initial: { opacity: 0, y: -20, scale: 0.98 },
+    initial: { opacity: 0, y: 24, scale: 0.98 },
     whileInView: { opacity: 1, y: 0, scale: 1 },
     viewport: { once: true, margin: '-30px' },
     transition: { duration: 0.8, ease: 'easeOut' as const },
@@ -172,9 +217,9 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
         
         {/* ================= SCENE 2: MAIN INVITATION CARD ================= */}
         <motion.div
-          initial={{ opacity: 0, y: -24, scale: 0.98 }}
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.85, ease: 'easeOut' as const }}
           className="relative rounded-3xl p-6 sm:p-10 text-center border shadow-2xl overflow-hidden mb-12"
           style={{
             backgroundColor: selectedTemplate.theme.cardBg,
@@ -420,29 +465,29 @@ export const InvitationExperience: React.FC<InvitationExperienceProps> = ({
           />
 
           {/* Live Countdown Box */}
-          <div className="mt-6 p-4 rounded-2xl bg-background-main/70 border border-gold-border/40">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-gold-champagne block mb-2 font-medium">
-              Counting Down to the Big Day
-            </span>
-            <div className="grid grid-cols-4 gap-2 text-center">
-              <div className="bg-black/40 rounded-xl p-2 border border-gold-border/20">
-                <span className="font-serif text-xl sm:text-2xl font-bold text-ivory block">{timeLeft.days}</span>
-                <span className="text-[9px] uppercase tracking-wider text-text-muted">Days</span>
-              </div>
-              <div className="bg-black/40 rounded-xl p-2 border border-gold-border/20">
-                <span className="font-serif text-xl sm:text-2xl font-bold text-ivory block">{timeLeft.hours}</span>
-                <span className="text-[9px] uppercase tracking-wider text-text-muted">Hours</span>
-              </div>
-              <div className="bg-black/40 rounded-xl p-2 border border-gold-border/20">
-                <span className="font-serif text-xl sm:text-2xl font-bold text-ivory block">{timeLeft.minutes}</span>
-                <span className="text-[9px] uppercase tracking-wider text-text-muted">Mins</span>
-              </div>
-              <div className="bg-black/40 rounded-xl p-2 border border-gold-border/20">
-                <span className="font-serif text-xl sm:text-2xl font-bold text-gold-champagne block">{timeLeft.seconds}</span>
-                <span className="text-[9px] uppercase tracking-wider text-text-muted">Secs</span>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mt-6 p-4 rounded-2xl bg-background-main/70 border border-gold-border/40 backdrop-blur-sm"
+          >
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-champagne opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-champagne"></span>
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.25em] text-gold-champagne font-medium">
+                Counting Down to the Big Day
+              </span>
             </div>
-          </div>
+            <div className="grid grid-cols-4 gap-2 text-center">
+              <CountdownItem value={timeLeft.days} label="Days" />
+              <CountdownItem value={timeLeft.hours} label="Hours" />
+              <CountdownItem value={timeLeft.minutes} label="Mins" />
+              <CountdownItem value={timeLeft.seconds} label="Secs" isHighlighted />
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* ================= SCENE 6: DRESS CODE ================= */}
