@@ -25,7 +25,7 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
   partnerTwo = 'Meher',
   weddingDate = 'Saturday, October 24, 2026',
   venueName = 'The Royal Palm Garden & Pavilion',
-  videoSrc = '/lv_0_20261018142737.mp4',
+  videoSrc = '/wedding%20aniamtion.mp4',
 }) => {
   const navigate = useNavigate();
   // State machine: 'intro' (0-5s) -> 'transition' (5-7s) -> 'invitation' (7s+)

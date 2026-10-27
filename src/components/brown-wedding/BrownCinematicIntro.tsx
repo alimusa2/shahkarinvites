@@ -10,10 +10,11 @@ interface BrownCinematicIntroProps {
 
 export const BrownCinematicIntro: React.FC<BrownCinematicIntroProps> = ({
   onComplete,
-  videoSrc = '/lv_0_20261018142737.mp4',
+  videoSrc = '/wedding%20aniamtion.mp4',
   durationSeconds = 5,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentSrc, setCurrentSrc] = useState(videoSrc);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -72,11 +73,17 @@ export const BrownCinematicIntro: React.FC<BrownCinematicIntroProps> = ({
       {!videoError ? (
         <video
           ref={videoRef}
-          src={videoSrc}
+          src={currentSrc}
           playsInline
           autoPlay
           onLoadedData={() => setVideoLoaded(true)}
-          onError={() => setVideoError(true)}
+          onError={() => {
+            if (currentSrc !== '/lv_0_20261018142737.mp4') {
+              setCurrentSrc('/lv_0_20261018142737.mp4');
+            } else {
+              setVideoError(true);
+            }
+          }}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             videoLoaded ? 'opacity-85' : 'opacity-0'
           }`}

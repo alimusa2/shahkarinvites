@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: true,
+    watch: {
+      ignored: ['**/*.mp4', '**/*.webm', '**/*.avi', '**/*.mov'],
+    },
   },
 })

@@ -9,7 +9,7 @@ export const BrownWeddingPage: React.FC = () => {
   const partnerTwo = searchParams.get('groom') || searchParams.get('partnerTwo') || 'Meher';
   const venue = searchParams.get('venue') || 'The Royal Palm Garden & Pavilion';
   const date = searchParams.get('date') || 'Saturday, October 24, 2026';
-  const videoSrc = searchParams.get('video') || '/lv_0_20261018142737.mp4';
+  const videoSrc = searchParams.get('video') || '/wedding%20aniamtion.mp4';
 
   useEffect(() => {
     document.title = `${partnerOne} & ${partnerTwo} — Luxury Chocolate & Gold Wedding Card`;
