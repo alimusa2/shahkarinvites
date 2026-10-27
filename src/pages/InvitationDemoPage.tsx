@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { InvitationVideoPlayer } from '../components/InvitationVideoPlayer';
 import { InvitationExperience } from '../components/InvitationExperience';
 
 export const InvitationDemoPage: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   // Stages: 'video' (intro/loading video) -> 'opened' (full invitation suite & card)
   const [stage, setStage] = useState<'video' | 'opened'>('video');
 
   const theme = searchParams.get('theme') || 'emerald-elegance';
+
+  useEffect(() => {
+    if (theme === 'brown-luxury') {
+      navigate(`/cards/brown-wedding?${searchParams.toString()}`, { replace: true });
+    }
+  }, [theme, navigate, searchParams]);
   const bride = searchParams.get('bride') || 'Ayesha';
   const groom = searchParams.get('groom') || 'Hamza';
   const venue = searchParams.get('venue') || 'The Grand Palace';

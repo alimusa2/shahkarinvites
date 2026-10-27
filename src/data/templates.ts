@@ -101,4 +101,21 @@ export const TEMPLATES: InvitationTemplate[] = [
     badge: 'Festive Special',
     tags: ['Mehndi', 'Mayun', 'Sangeet'],
   },
+  {
+    id: 'brown-luxury',
+    name: 'Espresso & Antique Gold',
+    category: 'Wedding & Walima',
+    subtitle: 'Dark Walnut Arch & Foil Florals',
+    description: 'Opulent espresso and walnut canvas adorned with antique gold filigree, warm candlelight, floating petals, and handcrafted paper unfolding.',
+    theme: {
+      bg: '#170C08',
+      cardBg: '#24140F',
+      accent: '#B88A55',
+      text: '#F7F0E5',
+      border: 'rgba(184, 138, 85, 0.4)',
+    },
+    image: '/assets/brown-card/cover.jpg',
+    badge: 'New Luxury Edition',
+    tags: ['Nikah', 'Walima', 'VIP Edition'],
+  },
 ];

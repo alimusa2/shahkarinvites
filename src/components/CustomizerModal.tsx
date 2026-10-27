@@ -34,6 +34,10 @@ export const CustomizerModal: React.FC<CustomizerModalProps> = ({
       venue: venue || 'The Grand Palace, Lahore',
       date: date || '2026-12-20',
     });
+    if (selectedTheme === 'brown-luxury') {
+      navigate(`/cards/brown-wedding?${params.toString()}`);
+      return;
+    }
     navigate(`/invitation/demo?${params.toString()}`);
   };
 

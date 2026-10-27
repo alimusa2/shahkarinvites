@@ -22,6 +22,10 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
     : TEMPLATES.filter((t) => t.category.toLowerCase().includes(activeCategory.toLowerCase().split(' ')[0]));
 
   const handlePreview = (template: InvitationTemplate) => {
+    if (template.id === 'brown-luxury') {
+      navigate('/cards/brown-wedding');
+      return;
+    }
     navigate(`/invitation/demo?theme=${template.id}`);
   };
 

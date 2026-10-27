@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+/* ==========================================================================
+   BROWN LUXURY WEDDING CARD - SCOPED DESIGN SYSTEM
+   Palette:
+   - Espresso Brown: #24140F
+   - Walnut Brown:   #4A2E23
+   - Antique Gold:   #B88A55
+   - Champagne:      #E8D7BD
+   - Ivory:          #F7F0E5
+   All styles strictly scoped to .bw-card to preserve global styles.
+   ========================================================================== */
+
+.bw-card-root {
+  --bw-espresso: #24140F;
+  --bw-espresso-deep: #170C08;
+  --bw-walnut: #4A2E23;
+  --bw-walnut-light: #5C3A2D;
+  --bw-gold: #B88A55;
+  --bw-gold-bright: #D4A86A;
+  --bw-gold-deep: #8E6534;
+  --bw-champagne: #E8D7BD;
+  --bw-ivory: #F7F0E5;
+  --bw-ivory-warm: #EFE6D8;
+  --bw-gold-border: rgba(184, 138, 85, 0.45);
+  --bw-gold-glow: rgba(184, 138, 85, 0.25);
+  
+  background-color: var(--bw-espresso-deep);
+  color: var(--bw-ivory);
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Calligraphy font family */
+.bw-font-script {
+  font-family: 'Great Vibes', cursive, 'Playfair Display', serif;
+}
+
+.bw-font-serif {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+
+.bw-font-sans {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Antique Gold Text Gradient */
+.bw-gold-text {
+  background: linear-gradient(135deg, #FFF1DC 0%, #D4A86A 40%, #B88A55 75%, #8E6534 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bw-gold-shimmer {
+  background: linear-gradient(90deg, #B88A55 0%, #FFF1DC 50%, #B88A55 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: bwShimmer 4s ease-in-out infinite;
+}
+
+@keyframes bwShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* 3D Perspective Context */
+.bw-perspective-1200 {
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+}
+
+.bw-preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.bw-backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Subtle Candlelight & Bokeh Pulsing */
+@keyframes bwCandleFlicker {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  25% { opacity: 0.95; transform: scale(1.03); }
+  50% { opacity: 0.65; transform: scale(0.98); }
+  75% { opacity: 0.88; transform: scale(1.02); }
+}
+
+.bw-candle-glow {
+  animation: bwCandleFlicker 3.5s ease-in-out infinite;
+}
+
+/* Silk Overlay Transition */
+@keyframes bwSilkSweep {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.95;
+  }
+  70% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateX(110%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+
+.bw-silk-sweep {
+  animation: bwSilkSweep 2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Warm Gold Light Sweep */
+@keyframes bwLightSweep {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+.bw-light-sweep {
+  animation: bwLightSweep 1.8s ease-in-out forwards;
+}
+
+/* Subtle Floating Petal Animation */
+@keyframes bwPetalDrift {
+  0% {
+    transform: translateY(-20px) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(45px);
+    opacity: 0;
+  }
+}
+
+.bw-petal {
+  animation: bwPetalDrift linear infinite;
+}
+
+/* Paper Grain Texture Simulation */
+.bw-paper-espresso {
+  background-color: #24140F;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(74, 46, 35, 0.4) 0%, transparent 80%),
+    radial-gradient(rgba(184, 138, 85, 0.05) 1px, transparent 0);
+  background-size: 100% 100%, 20px 20px;
+}
+
+.bw-paper-walnut {
+  background-color: #382118;
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(92, 58, 45, 0.5) 0%, transparent 70%),
+    radial-gradient(rgba(232, 215, 189, 0.04) 1px, transparent 0);
+  background-size: 100% 100%, 16px 16px;
+}
+
+.bw-paper-ivory {
+  background-color: #F7F0E5;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(239, 230, 216, 0.8) 0%, transparent 100%),
+    radial-gradient(rgba(184, 138, 85, 0.07) 1px, transparent 0);
+  background-size: 100% 100%, 12px 12px;
+}
+
+/* Antique Gold Borders & Ornaments */
+.bw-gold-frame {
+  border: 1px solid rgba(184, 138, 85, 0.45);
+  box-shadow: 
+    0 0 0 3px rgba(36, 20, 15, 0.9),
+    0 0 0 4px rgba(184, 138, 85, 0.3),
+    0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.bw-gold-inner-border {
+  border: 1px solid rgba(184, 138, 85, 0.25);
+}
+
+/* Polaroid Shadow and Rotation */
+.bw-polaroid {
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.6),
+    0 5px 12px rgba(184, 138, 85, 0.12);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.bw-polaroid:hover {
+  transform: translateY(-6px) rotate(0deg) scale(1.02);
+  box-shadow: 
+    0 18px 35px -5px rgba(0, 0, 0, 0.75),
+    0 8px 18px rgba(184, 138, 85, 0.22);
+}
+
+/* Wax Seal Button Press Effect */
+.bw-wax-seal {
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.bw-wax-seal:hover {
+  transform: scale(1.06);
+  box-shadow: 
+    0 8px 22px rgba(184, 138, 85, 0.4),
+    inset 0 2px 5px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.bw-wax-seal:active {
+  transform: scale(0.96);
+}
+
+/* Accessible focus visible rings */
+.bw-card-root button:focus-visible,
+.bw-card-root a:focus-visible {
+  outline: 2px solid var(--bw-gold-bright);
+  outline-offset: 3px;
+}
+
+/* Safe area padding */
+.bw-safe-top {
+  padding-top: max(16px, env(safe-area-inset-top));
+}
+
+.bw-safe-bottom {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+
+/* Reduce motion handling */
+@media (prefers-reduced-motion: reduce) {
+  .bw-silk-sweep,
+  .bw-light-sweep,
+  .bw-petal,
+  .bw-candle-glow,
+  .bw-gold-shimmer {
+    animation: none !important;
+    transition: none !important;
+  }
+}
