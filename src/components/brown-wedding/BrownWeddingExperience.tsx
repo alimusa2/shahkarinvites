@@ -5,7 +5,11 @@ import { BrownCinematicIntro } from './BrownCinematicIntro';
 import { BrownSilkTransition } from './BrownSilkTransition';
 import { BrownAtmosphere } from './BrownAtmosphere';
 import { BrownInvitationCard } from './BrownInvitationCard';
+import { BrownCountdown } from './BrownCountdown';
+import { BrownEventSchedule } from './BrownEventSchedule';
+import { BrownVenueLocation } from './BrownVenueLocation';
 import { BrownMemoriesGallery } from './BrownMemoriesGallery';
+import { BrownInteractiveRSVP } from './BrownInteractiveRSVP';
 import { BrownSurpriseHeart } from './BrownSurpriseHeart';
 import { BrownFinalSection } from './BrownFinalSection';
 import { brownAudio } from './BrownAudioController';
@@ -31,7 +35,7 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
   // State machine: 'intro' (0-5s) -> 'transition' (5-7s) -> 'invitation' (7s+)
   const [stage, setStage] = useState<'intro' | 'transition' | 'invitation'>('intro');
   const [isMuted, setIsMuted] = useState(brownAudio.getIsMuted());
-  const [hasCardOpened, setHasCardOpened] = useState(false);
+  const [, setHasCardOpened] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Sync mute state
@@ -104,7 +108,7 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
         </>
       )}
 
-      {/* SECTIONS C THROUGH I — COMPLETE INTERACTIVE WEDDING CARD SUITE (7s+) */}
+      {/* SECTIONS C THROUGH I & EXPANDED SUITE PAGES (7s+) */}
       {stage === 'invitation' && (
         <div className="animate-fade-in relative w-full">
           {/* Persistent Floating Controls Bar (Safe Area Compliant) */}
@@ -136,7 +140,7 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
 
           <BrownAtmosphere>
             <main className="w-full flex flex-col items-center pt-16 sm:pt-20 pb-16">
-              {/* SECTION C & D & E: 3D INVITATION CARD & PERSONAL MESSAGE */}
+              {/* PAGE 1: 3D INVITATION CARD & PERSONAL MESSAGE (Sections C, D, E) */}
               <BrownInvitationCard
                 partnerOne={partnerOne}
                 partnerTwo={partnerTwo}
@@ -145,17 +149,48 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
                 onOpenStateChange={(open) => setHasCardOpened(open)}
               />
 
-              {/* SECTION F: MEMORIES GALLERY */}
+              {/* INTERACTIVE TOUCH: LIVE WEDDING COUNTDOWN */}
+              <section aria-label="Celebration Countdown" className="w-full">
+                <BrownCountdown />
+              </section>
+
+              {/* PAGE 2: ITINERARY & CELEBRATION SCHEDULE */}
+              <section aria-label="Event Itinerary" className="w-full">
+                <BrownEventSchedule
+                  partnerOne={partnerOne}
+                  partnerTwo={partnerTwo}
+                  weddingDate={weddingDate}
+                  venueName={venueName}
+                />
+              </section>
+
+              {/* PAGE 3: INTERACTIVE VENUE MAP & LOCATION GUIDE */}
+              <section aria-label="Venue Location and Directions" className="w-full">
+                <BrownVenueLocation
+                  venueName={venueName}
+                  mapQuery="Royal Palm Golf and Country Club, Lahore"
+                />
+              </section>
+
+              {/* PAGE 4: VINTAGE POLAROID MEMORIES GALLERY */}
               <section aria-label="Memories Gallery" className="w-full">
                 <BrownMemoriesGallery />
               </section>
 
-              {/* SECTION G: HIDDEN MESSAGE / POP-UP SURPRISE HEART */}
+              {/* PAGE 5: INTERACTIVE RSVP & GUEST BLESSINGS */}
+              <section aria-label="RSVP and Guestbook" className="w-full">
+                <BrownInteractiveRSVP
+                  partnerOne={partnerOne}
+                  partnerTwo={partnerTwo}
+                />
+              </section>
+
+              {/* INTERACTIVE TOUCH: A WHISPERED SECRET & GOLD CONFETTI */}
               <section aria-label="Secret Love Note" className="w-full">
                 <BrownSurpriseHeart />
               </section>
 
-              {/* SECTIONS H & I: FINAL EMOTIONAL MESSAGE & END CARD */}
+              {/* FINAL EMOTIONAL MESSAGE & END CARD WITH REPLAY */}
               <section aria-label="Closing & Replay" className="w-full">
                 <BrownFinalSection
                   onReplay={handleReplay}

@@ -102,82 +102,27 @@ export const BrownCinematicIntro: React.FC<BrownCinematicIntroProps> = ({
         }}
       />
 
-      {/* Storyboard Frame 1: Center Golden Ring with Delicate Botanical Flower */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-sm">
-        {/* Glowing Halo */}
-        <div
-          className="bw-candle-glow absolute w-44 h-44 rounded-full pointer-events-none blur-2xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(212, 168, 106, 0.35) 0%, rgba(184, 138, 85, 0.1) 60%, transparent 80%)',
-          }}
-        />
-
-        {/* Golden Circular Ring with Botanical Flower */}
-        <div
-          className="relative w-36 h-36 rounded-full flex items-center justify-center mb-6"
-          style={{
-            border: '1px solid rgba(184, 138, 85, 0.4)',
-            boxShadow: '0 0 25px rgba(184, 138, 85, 0.25), inset 0 0 15px rgba(184, 138, 85, 0.15)',
-          }}
-        >
-          {/* Inner dashed ring */}
+      {/* Fallback emblem only displayed if video fails to load */}
+      {videoError && (
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-sm animate-fade-in">
           <div
-            className="absolute inset-1.5 rounded-full border border-dashed border-[#B88A55]/30 animate-spin"
-            style={{ animationDuration: '24s' }}
-          />
-
-          {/* Golden Flower / Botanical Emblem */}
-          <svg
-            width="56"
-            height="56"
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="relative z-10 transition-transform duration-700 hover:scale-110"
+            className="w-20 h-20 rounded-full flex items-center justify-center mb-4"
+            style={{
+              border: '1px solid rgba(184, 138, 85, 0.4)',
+              boxShadow: '0 0 25px rgba(184, 138, 85, 0.25)',
+            }}
           >
-            <path
-              d="M32 6 C35 18 46 29 58 32 C46 35 35 46 32 58 C29 46 18 35 6 32 C18 29 29 18 32 6 Z"
-              fill="url(#goldFloralGrad)"
-              style={{ filter: 'drop-shadow(0 2px 8px rgba(184, 138, 85, 0.6))' }}
-            />
-            <circle cx="32" cy="32" r="3.5" fill="#FFF1DC" />
-            <defs>
-              <linearGradient id="goldFloralGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FFF1DC" />
-                <stop offset="45%" stopColor="#D4A86A" />
-                <stop offset="100%" stopColor="#8E6534" />
-              </linearGradient>
-            </defs>
-          </svg>
+            <div className="w-4 h-4 rounded-full bg-[#D4A86A] animate-ping" />
+          </div>
         </div>
+      )}
 
-        {/* Romantic Subtitle */}
-        <p className="bw-font-script text-2xl text-[#E8D7BD] tracking-wide mb-1 drop-shadow">
-          A Beautiful Beginning
-        </p>
-        <p className="text-[10px] uppercase tracking-[0.3em] text-[#B88A55] font-sans">
-          Loading Invitation
-        </p>
-
-        {/* Storyboard Frame 1: Three Elegant Progress Dots */}
-        <div className="flex items-center gap-2 mt-6" aria-hidden="true">
-          {[0, 1, 2].map((idx) => {
-            const dotPct = (idx + 1) * 33.3;
-            const active = progress >= dotPct;
-            return (
-              <span
-                key={idx}
-                className="transition-all duration-300 rounded-full"
-                style={{
-                  width: active ? 18 : 6,
-                  height: 4,
-                  backgroundColor: active ? '#D4A86A' : 'rgba(184, 138, 85, 0.3)',
-                  boxShadow: active ? '0 0 8px rgba(212, 168, 106, 0.6)' : 'none',
-                }}
-              />
-            );
-          })}
-        </div>
+      {/* Minimalist Bottom Edge Golden Progress Line (unobtrusive, no text) */}
+      <div className="absolute bottom-0 inset-x-0 h-[2px] bg-black/40 z-20 pointer-events-none" aria-hidden="true">
+        <div
+          className="h-full bg-gradient-to-r from-[#B88A55] via-[#FFF1DC] to-[#D4A86A] transition-all duration-150"
+          style={{ width: `${progress}%` }}
+        />
       </div>
 
       {/* Top Controls: Audio Mute & Skip Intro */}
