@@ -36,6 +36,8 @@ export const InvitationVideoPlayer: React.FC<InvitationVideoPlayerProps> = ({
           src={videoSrc}
           playsInline
           autoPlay
+          muted
+          preload="auto"
           onEnded={onComplete}
           className="w-full h-full object-cover"
         />

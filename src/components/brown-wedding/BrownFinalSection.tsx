@@ -2,18 +2,22 @@ import React from 'react';
 import { Heart, RotateCcw, ArrowUp } from 'lucide-react';
 
 interface BrownFinalSectionProps {
+  partnerOne?: string;
+  partnerTwo?: string;
   onReplay: () => void;
   onScrollToTop: () => void;
 }
 
 export const BrownFinalSection: React.FC<BrownFinalSectionProps> = ({
+  partnerOne = 'Ayesha',
+  partnerTwo = 'Zayd',
   onReplay,
   onScrollToTop,
 }) => {
   return (
     <div className="w-full max-w-lg mx-auto my-12 px-4 flex flex-col items-center text-center select-none">
-      {/* SECTION H — FINAL EMOTIONAL MESSAGE */}
-      <div className="w-full relative p-8 sm:p-10 rounded-2xl bg-[#1D100B] border border-[#B88A55]/30 shadow-2xl overflow-hidden mb-10">
+      {/* SECTION H — FINAL WEDDING INVITATION MESSAGE */}
+      <div className="w-full relative p-8 sm:p-10 rounded-2xl bg-[#1D100B] border border-[#B88A55]/40 shadow-2xl overflow-hidden mb-10">
         {/* Subtle antique gold corner filigree */}
         <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-[#B88A55]/60" />
         <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-[#B88A55]/60" />
@@ -22,11 +26,11 @@ export const BrownFinalSection: React.FC<BrownFinalSectionProps> = ({
 
         <div className="w-8 h-[1px] bg-[#B88A55]/60 mx-auto mb-4" />
 
-        <p className="bw-font-serif text-2xl sm:text-3xl text-[#FFF1DC] font-light leading-relaxed tracking-wide">
-          Every love story has a beginning.
+        <p className="bw-font-serif text-xl sm:text-2xl text-[#FFF1DC] font-light leading-relaxed tracking-wide">
+          Your presence and prayers will make our celebration complete.
         </p>
-        <p className="bw-font-script text-3xl sm:text-4xl text-[#D4A86A] mt-2">
-          This one is ours.
+        <p className="bw-font-script text-3xl sm:text-4xl text-[#D4A86A] mt-2.5">
+          {partnerOne} &amp; {partnerTwo}
         </p>
 
         <div className="flex items-center justify-center gap-2 mt-4 text-[#B88A55]">
@@ -43,7 +47,7 @@ export const BrownFinalSection: React.FC<BrownFinalSectionProps> = ({
         </div>
 
         <h3 className="bw-font-script text-3xl sm:text-4xl text-[#E8D7BD] tracking-wide mb-1">
-          With all my heart
+          With Love &amp; Gratitude
         </h3>
 
         {/* Ornamental Divider Line */}
@@ -54,7 +58,7 @@ export const BrownFinalSection: React.FC<BrownFinalSectionProps> = ({
         </div>
 
         <p className="text-xs uppercase tracking-[0.25em] text-[#8E6534] font-sans mb-8">
-          Together, Always & Forever
+          Together in Love &amp; Faith
         </p>
 
         {/* Two Restrained Controls */}

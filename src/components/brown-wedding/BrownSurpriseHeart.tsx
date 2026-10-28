@@ -8,7 +8,7 @@ interface BrownSurpriseHeartProps {
 }
 
 export const BrownSurpriseHeart: React.FC<BrownSurpriseHeartProps> = ({
-  hiddenMessage = "If I could choose a thousand times, I'd still choose this story.",
+  hiddenMessage = "May this sacred union be blessed with eternal love, harmony, and peace throughout all the years ahead.",
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,12 +52,12 @@ export const BrownSurpriseHeart: React.FC<BrownSurpriseHeartProps> = ({
       ref={containerRef}
       className="w-full max-w-sm mx-auto my-8 px-4 text-center select-none"
     >
-      <div className="relative p-6 rounded-2xl bg-[#24140F]/90 border border-[#B88A55]/30 shadow-2xl backdrop-blur-sm overflow-hidden">
+      <div className="relative p-6 rounded-2xl bg-[#24140F]/90 border border-[#B88A55]/40 shadow-2xl backdrop-blur-sm overflow-hidden">
         {/* Ambient Candlelight Warm Glow behind */}
         <div
           className="bw-candle-glow absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at 50% 40%, rgba(184, 138, 85, 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at 50% 40%, rgba(184, 138, 85, 0.18) 0%, transparent 70%)',
           }}
         />
 
@@ -65,7 +65,7 @@ export const BrownSurpriseHeart: React.FC<BrownSurpriseHeartProps> = ({
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#382118] border border-[#B88A55]/30 mb-4">
           <Sparkles size={11} className="text-[#D4A86A]" />
           <span className="text-[10px] uppercase tracking-[0.2em] text-[#E8D7BD] font-sans">
-            A Whispered Secret
+            A Wedding Blessing
           </span>
         </div>
 
@@ -84,7 +84,7 @@ export const BrownSurpriseHeart: React.FC<BrownSurpriseHeartProps> = ({
                 border: '1.5px solid rgba(255, 241, 220, 0.5)',
               }}
               aria-expanded={isRevealed}
-              aria-label="Tap to unlock hidden romantic message"
+              aria-label="Tap to unlock wedding blessing message"
             >
               {/* Outer pulsing ring */}
               <div
@@ -100,24 +100,24 @@ export const BrownSurpriseHeart: React.FC<BrownSurpriseHeartProps> = ({
             </button>
 
             <p className="text-xs text-[#E8D7BD]/80 font-serif tracking-wide mt-3 italic">
-              Tap the golden seal to reveal a hidden thought
+              Tap the golden seal to reveal a special wedding prayer
             </p>
           </div>
         ) : (
-          /* Revealed Secret Message with Soft Unfold Animation */
+          /* Revealed Wedding Blessing Note */
           <div className="flex flex-col items-center animate-fade-in py-2">
             <div className="w-10 h-10 rounded-full bg-[#382118] border border-[#B88A55]/50 flex items-center justify-center mb-3 shadow-md">
               <Heart size={18} className="text-[#D4A86A] fill-[#D4A86A]" />
             </div>
 
-            <p className="bw-font-serif text-lg sm:text-xl text-[#FFF1DC] font-normal leading-relaxed italic max-w-xs drop-shadow">
+            <p className="bw-font-serif text-base sm:text-lg text-[#FFF1DC] font-normal leading-relaxed italic max-w-xs drop-shadow">
               "{hiddenMessage}"
             </p>
 
             <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#B88A55] to-transparent my-3" />
 
-            <span className="bw-font-script text-xl text-[#D4A86A]">
-              Will you be mine?
+            <span className="bw-font-script text-2xl text-[#D4A86A]">
+              With Love &amp; Prayers
             </span>
           </div>
         )}

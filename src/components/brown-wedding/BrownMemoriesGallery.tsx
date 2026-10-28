@@ -15,20 +15,20 @@ interface BrownMemoriesGalleryProps {
 const DEFAULT_PHOTOS: MemoryPhoto[] = [
   {
     url: '/assets/brown-card/memory-1.jpg',
-    caption: 'My Favourite Place is You',
-    alt: 'Romantic golden hour beach embrace',
+    caption: 'Sacred Nikah & Family Blessings',
+    alt: 'Sacred Nikah ceremony moments',
     rotation: -2,
   },
   {
     url: '/assets/brown-card/memory-2.jpg',
-    caption: 'Under the Lantern Glow',
-    alt: 'Candlelight dinner tender wedding moment',
+    caption: 'Under the Lantern Glow & Floral Pavilion',
+    alt: 'Candlelight banquet and celebration',
     rotation: 2.5,
   },
   {
     url: '/assets/brown-card/memory-3.jpg',
-    caption: 'Together, From This Day Forward',
-    alt: 'Embracing under romantic fairy light arch',
+    caption: 'A Lifetime of Togetherness Begins',
+    alt: 'Newlyweds celebration under fairy lights',
     rotation: -1.5,
   },
 ];

@@ -105,7 +105,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectTier }) 
         <div className="mt-12 p-4 rounded-xl bg-background-card/50 border border-gold-border/20 max-w-2xl mx-auto flex items-start gap-3 text-xs text-text-muted">
           <AlertCircle size={16} className="text-gold-champagne shrink-0 mt-0.5" />
           <p>
-            <strong className="text-gold-champagne/90">Demonstration pricing:</strong> These are proposed live package rates in Pakistani Rupees. Complete order fulfillment, direct WhatsApp onboarding, and payment processing are managed via customer inquiry during this preview release.
+            <strong className="text-gold-champagne/90">Demonstration pricing:</strong> These are current live package rates in Pakistani Rupees. Complete order fulfillment, direct WhatsApp onboarding, and payment processing are managed via customer inquiry during this preview release.
           </p>
         </div>
 

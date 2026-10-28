@@ -25,15 +25,15 @@ interface BrownWeddingExperienceProps {
 }
 
 export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
-  partnerOne = 'Aayan',
-  partnerTwo = 'Meher',
+  partnerOne = 'Ayesha',
+  partnerTwo = 'Zayd',
   weddingDate = 'Saturday, October 24, 2026',
   venueName = 'The Royal Palm Garden & Pavilion',
-  videoSrc = '/wedding%20aniamtion.mp4',
+  videoSrc = '/wedding-animation.mp4',
 }) => {
   const navigate = useNavigate();
-  // State machine: 'intro' (0-5s) -> 'transition' (5-7s) -> 'invitation' (7s+)
-  const [stage, setStage] = useState<'intro' | 'transition' | 'invitation'>('intro');
+  // State machine: 'intro' (playing video) -> 'transitioning' (smooth crossfade & gold silk sweep) -> 'invitation' (fully opened)
+  const [stage, setStage] = useState<'intro' | 'transitioning' | 'invitation'>('intro');
   const [isMuted, setIsMuted] = useState(brownAudio.getIsMuted());
   const [, setHasCardOpened] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,13 +44,14 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
     return unsub;
   }, []);
 
-  // Ensure scroll is at top upon mounting or stage changes
+  // Ensure scroll is at top upon mounting
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [stage]);
+  }, []);
 
   const handleIntroComplete = () => {
-    setStage('transition');
+    // Initiate smooth crossfade transition
+    setStage('transitioning');
   };
 
   const handleTransitionEnd = () => {
@@ -81,126 +82,121 @@ export const BrownWeddingExperience: React.FC<BrownWeddingExperienceProps> = ({
       ref={containerRef}
       className="bw-card-root min-h-screen min-h-[100svh] w-full bg-[#120906] text-[#F7F0E5] relative overflow-x-hidden selection:bg-[#B88A55]/30 selection:text-[#FFF1DC]"
     >
-      {/* SECTION A — CINEMATIC INTRO (0-5s) */}
-      {stage === 'intro' && (
+      {/* CINEMATIC INTRO VIDEO OVERLAY (Mounts on top; dissolves seamlessly into the card) */}
+      {(stage === 'intro' || stage === 'transitioning') && (
         <BrownCinematicIntro
           onComplete={handleIntroComplete}
           videoSrc={videoSrc}
-          durationSeconds={5}
+          isExiting={stage === 'transitioning'}
         />
       )}
 
-      {/* SECTION B — VIDEO-TO-CARD TRANSITION (5-7s) */}
-      {stage === 'transition' && (
-        <>
-          <BrownSilkTransition onTransitionEnd={handleTransitionEnd} durationMs={1800} />
-          {/* Pre-render card atmosphere in background so transition reveals it seamlessly */}
-          <div className="opacity-70 scale-95 transition-all duration-1000">
-            <BrownAtmosphere>
-              <BrownInvitationCard
+      {/* LUXURY GOLDEN SILK VEIL CROSSFADE DURING TRANSITION */}
+      {stage === 'transitioning' && (
+        <BrownSilkTransition onTransitionEnd={handleTransitionEnd} durationMs={1100} />
+      )}
+
+      {/* INVITATION SUITE (Mounted continuously beneath the video so reveal is 100% flicker-free) */}
+      <div
+        className={`relative w-full transition-all duration-1000 ease-out ${
+          stage === 'intro'
+            ? 'opacity-40 scale-[0.97] pointer-events-none'
+            : stage === 'transitioning'
+            ? 'opacity-90 scale-[0.99] pointer-events-none'
+            : 'opacity-100 scale-100 animate-fade-in'
+        }`}
+      >
+        {/* Persistent Floating Safe-Area Controls Header */}
+        <header className="fixed top-3 inset-x-3 sm:inset-x-6 z-40 flex items-center justify-between pointer-events-none bw-safe-top">
+          {/* Return to Cardiva */}
+          <button
+            onClick={() => navigate('/')}
+            type="button"
+            className="pointer-events-auto flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#24140F]/90 backdrop-blur-md border border-[#B88A55]/40 text-[#E8D7BD] hover:text-[#FFF1DC] hover:border-[#D4A86A] text-xs transition-all active:scale-95 shadow-md"
+            aria-label="Return to Cardiva website"
+          >
+            <ArrowLeft size={13} />
+            <span className="text-[11px] font-sans">Cardiva Home</span>
+          </button>
+
+          {/* Sound Toggle */}
+          <button
+            onClick={toggleSound}
+            type="button"
+            className="pointer-events-auto flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#24140F]/90 backdrop-blur-md border border-[#B88A55]/40 text-[#E8D7BD] hover:text-[#FFF1DC] hover:border-[#D4A86A] text-xs transition-all active:scale-95 shadow-md"
+            aria-label={isMuted ? 'Unmute music' : 'Mute music'}
+          >
+            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-[#D4A86A] animate-pulse" />}
+            <span className="text-[10px] uppercase tracking-wider font-sans">
+              {isMuted ? 'Muted' : 'Audio On'}
+            </span>
+          </button>
+        </header>
+
+        <BrownAtmosphere>
+          <main className="w-full flex flex-col items-center pt-16 sm:pt-20 pb-20 px-2 sm:px-4">
+            {/* 3D INVITATION CARD & INNER CEREMONY DETAILS */}
+            <BrownInvitationCard
+              partnerOne={partnerOne}
+              partnerTwo={partnerTwo}
+              weddingDate={weddingDate}
+              venueName={venueName}
+              onOpenStateChange={(open) => setHasCardOpened(open)}
+            />
+
+            {/* LIVE WEDDING COUNTDOWN */}
+            <section aria-label="Celebration Countdown" className="w-full max-w-lg">
+              <BrownCountdown />
+            </section>
+
+            {/* ITINERARY & CELEBRATION SCHEDULE */}
+            <section aria-label="Event Itinerary" className="w-full max-w-lg">
+              <BrownEventSchedule
                 partnerOne={partnerOne}
                 partnerTwo={partnerTwo}
                 weddingDate={weddingDate}
                 venueName={venueName}
               />
-            </BrownAtmosphere>
-          </div>
-        </>
-      )}
+            </section>
 
-      {/* SECTIONS C THROUGH I & EXPANDED SUITE PAGES (7s+) */}
-      {stage === 'invitation' && (
-        <div className="animate-fade-in relative w-full">
-          {/* Persistent Floating Controls Bar (Safe Area Compliant) */}
-          <header className="fixed top-3 inset-x-3 sm:inset-x-6 z-50 flex items-center justify-between pointer-events-none bw-safe-top">
-            {/* Return to website */}
-            <button
-              onClick={() => navigate('/')}
-              type="button"
-              className="pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#24140F]/85 backdrop-blur-md border border-[#B88A55]/40 text-[#E8D7BD] hover:text-[#FFF1DC] text-xs transition-all active:scale-95 shadow-md"
-              aria-label="Return to Cardiva website"
-            >
-              <ArrowLeft size={13} />
-              <span className="text-[11px] font-sans">Cardiva Home</span>
-            </button>
+            {/* INTERACTIVE VENUE MAP & LOCATION GUIDE */}
+            <section aria-label="Venue Location and Directions" className="w-full max-w-lg">
+              <BrownVenueLocation
+                venueName={venueName}
+                mapQuery="Royal Palm Golf and Country Club, Lahore"
+              />
+            </section>
 
-            {/* Sound Toggle */}
-            <button
-              onClick={toggleSound}
-              type="button"
-              className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#24140F]/85 backdrop-blur-md border border-[#B88A55]/40 text-[#E8D7BD] hover:text-[#FFF1DC] text-xs transition-all active:scale-95 shadow-md"
-              aria-label={isMuted ? 'Unmute music' : 'Mute music'}
-            >
-              {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-[#D4A86A] animate-pulse" />}
-              <span className="text-[10px] uppercase tracking-wider font-sans">
-                {isMuted ? 'Muted' : 'Audio On'}
-              </span>
-            </button>
-          </header>
+            {/* CHERISHED MOMENTS GALLERY */}
+            <section aria-label="Wedding Memories Gallery" className="w-full max-w-lg">
+              <BrownMemoriesGallery />
+            </section>
 
-          <BrownAtmosphere>
-            <main className="w-full flex flex-col items-center pt-16 sm:pt-20 pb-16">
-              {/* PAGE 1: 3D INVITATION CARD & PERSONAL MESSAGE (Sections C, D, E) */}
-              <BrownInvitationCard
+            {/* INTERACTIVE RSVP & GUEST BLESSINGS */}
+            <section aria-label="RSVP and Guestbook" className="w-full max-w-lg">
+              <BrownInteractiveRSVP
                 partnerOne={partnerOne}
                 partnerTwo={partnerTwo}
-                weddingDate={weddingDate}
-                venueName={venueName}
-                onOpenStateChange={(open) => setHasCardOpened(open)}
               />
+            </section>
 
-              {/* INTERACTIVE TOUCH: LIVE WEDDING COUNTDOWN */}
-              <section aria-label="Celebration Countdown" className="w-full">
-                <BrownCountdown />
-              </section>
+            {/* SACRED WEDDING BLESSING */}
+            <section aria-label="Heartfelt Wedding Blessing" className="w-full max-w-lg">
+              <BrownSurpriseHeart />
+            </section>
 
-              {/* PAGE 2: ITINERARY & CELEBRATION SCHEDULE */}
-              <section aria-label="Event Itinerary" className="w-full">
-                <BrownEventSchedule
-                  partnerOne={partnerOne}
-                  partnerTwo={partnerTwo}
-                  weddingDate={weddingDate}
-                  venueName={venueName}
-                />
-              </section>
-
-              {/* PAGE 3: INTERACTIVE VENUE MAP & LOCATION GUIDE */}
-              <section aria-label="Venue Location and Directions" className="w-full">
-                <BrownVenueLocation
-                  venueName={venueName}
-                  mapQuery="Royal Palm Golf and Country Club, Lahore"
-                />
-              </section>
-
-              {/* PAGE 4: VINTAGE POLAROID MEMORIES GALLERY */}
-              <section aria-label="Memories Gallery" className="w-full">
-                <BrownMemoriesGallery />
-              </section>
-
-              {/* PAGE 5: INTERACTIVE RSVP & GUEST BLESSINGS */}
-              <section aria-label="RSVP and Guestbook" className="w-full">
-                <BrownInteractiveRSVP
-                  partnerOne={partnerOne}
-                  partnerTwo={partnerTwo}
-                />
-              </section>
-
-              {/* INTERACTIVE TOUCH: A WHISPERED SECRET & GOLD CONFETTI */}
-              <section aria-label="Secret Love Note" className="w-full">
-                <BrownSurpriseHeart />
-              </section>
-
-              {/* FINAL EMOTIONAL MESSAGE & END CARD WITH REPLAY */}
-              <section aria-label="Closing & Replay" className="w-full">
-                <BrownFinalSection
-                  onReplay={handleReplay}
-                  onScrollToTop={handleScrollToTop}
-                />
-              </section>
-            </main>
-          </BrownAtmosphere>
-        </div>
-      )}
+            {/* CLOSING & REPLAY */}
+            <section aria-label="Closing & Replay" className="w-full max-w-lg">
+              <BrownFinalSection
+                partnerOne={partnerOne}
+                partnerTwo={partnerTwo}
+                onReplay={handleReplay}
+                onScrollToTop={handleScrollToTop}
+              />
+            </section>
+          </main>
+        </BrownAtmosphere>
+      </div>
     </div>
   );
 };

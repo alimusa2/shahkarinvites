@@ -8,7 +8,7 @@ interface TemplateGalleryProps {
   selectedTemplateId?: string;
 }
 
-const CATEGORIES = ['All Designs', 'Wedding & Walima', 'Nikah & Reception', 'Baraat & Royal', 'Engagement', 'Mehndi & Mayun'];
+const CATEGORIES = ['All Designs', 'Wedding & Walima', 'Nikah & Reception', 'Baraat & Royal', 'Mehndi & Mayun'];
 
 export const TemplateGallery: React.FC<TemplateGalleryProps> = ({
   onSelectTemplate,

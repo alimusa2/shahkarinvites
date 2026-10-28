@@ -71,7 +71,7 @@ export const TEMPLATES: InvitationTemplate[] = [
   {
     id: 'floral-romance',
     name: 'Floral Romance',
-    category: 'Engagement & Baraat',
+    category: 'Nikah & Reception',
     subtitle: 'Blush Watercolor & Foil Botanicals',
     description: 'Romantic blush tones layered with soft watercolor washes, blooming english roses, and delicate fairy-lit arches.',
     theme: {
@@ -82,7 +82,7 @@ export const TEMPLATES: InvitationTemplate[] = [
       border: 'rgba(228, 168, 179, 0.3)',
     },
     image: '/assets/floral-card.jpg',
-    tags: ['Engagement', 'Baraat', 'Qawwali Night'],
+    tags: ['Nikah', 'Baraat', 'Walima'],
   },
   {
     id: 'mehndi-celebration',

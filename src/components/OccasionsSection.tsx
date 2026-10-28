@@ -9,13 +9,13 @@ interface OccasionItem {
 }
 
 const OCCASIONS: OccasionItem[] = [
-  { name: 'Nikah', urdu: 'نکاح', tagline: 'Sacred vows & intimate family blessings', icon: Moon },
-  { name: 'Baraat', urdu: 'بارات', tagline: 'Grand royal procession & celebratory banquet', icon: Compass },
-  { name: 'Walima', urdu: 'ولیمہ', tagline: 'Elegant formal reception with loved ones', icon: Heart },
+  { name: 'Nikah Ceremony', urdu: 'نکاح', tagline: 'Sacred vows & intimate family blessings', icon: Moon },
+  { name: 'Baraat Royal Procession', urdu: 'بارات', tagline: 'Grand royal procession & celebratory banquet', icon: Compass },
+  { name: 'Walima Reception', urdu: 'ولیمہ', tagline: 'Elegant formal reception with loved ones', icon: Heart },
   { name: 'Mehndi & Mayun', urdu: 'مہندی', tagline: 'Festive marigolds, dholak rhythms & joy', icon: Sun },
-  { name: 'Engagement', urdu: 'منگنی', tagline: 'The beautiful first promise of forever', icon: Sparkles },
-  { name: 'Milestone Birthdays', urdu: 'سالگرہ', tagline: 'Golden jubilees, first birthdays & galas', icon: Cake },
-  { name: 'Corporate & VIP Galas', urdu: 'تقریبات', tagline: 'Annual dinners, launch ceremonies & expos', icon: Briefcase },
+  { name: 'Sangeet & Qawwali Night', urdu: 'قوالی', tagline: 'Soulful musical evening & wedding celebrations', icon: Sparkles },
+  { name: 'Dholki & Haldi Gathering', urdu: 'ڈھولکی', tagline: 'Traditional pre-wedding family rituals & folk songs', icon: Cake },
+  { name: 'VIP Wedding Banquet', urdu: 'شاہی ضیافت', tagline: 'Luxury gala dinner & distinguished guest hospitality', icon: Briefcase },
 ];
 
 interface OccasionsSectionProps {
@@ -41,7 +41,7 @@ export const OccasionsSection: React.FC<OccasionsSectionProps> = ({ onSelectOcca
             </h2>
           </div>
           <p className="text-text-secondary text-sm max-w-md font-light">
-            From sacred Nikah ceremonies to celebratory Mehndi nights and prestigious corporate galas.
+            From sacred Nikah ceremonies to celebratory Mehndi nights and grand royal wedding banquets.
           </p>
         </div>
 

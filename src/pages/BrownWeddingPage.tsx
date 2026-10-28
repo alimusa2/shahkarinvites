@@ -5,14 +5,14 @@ import { BrownWeddingExperience } from '../components/brown-wedding/BrownWedding
 export const BrownWeddingPage: React.FC = () => {
   const [searchParams] = useSearchParams();
 
-  const partnerOne = searchParams.get('bride') || searchParams.get('partnerOne') || 'Aayan';
-  const partnerTwo = searchParams.get('groom') || searchParams.get('partnerTwo') || 'Meher';
-  const venue = searchParams.get('venue') || 'The Royal Palm Garden & Pavilion';
+  const partnerOne = searchParams.get('bride') || searchParams.get('partnerOne') || 'Ayesha';
+  const partnerTwo = searchParams.get('groom') || searchParams.get('partnerTwo') || 'Zayd';
+  const venue = searchParams.get('venue') || 'The Royal Palm Garden & Pavilion, Lahore';
   const date = searchParams.get('date') || 'Saturday, October 24, 2026';
-  const videoSrc = searchParams.get('video') || '/wedding%20aniamtion.mp4';
+  const videoSrc = searchParams.get('video') || '/wedding-animation.mp4';
 
   useEffect(() => {
-    document.title = `${partnerOne} & ${partnerTwo} — Luxury Chocolate & Gold Wedding Card`;
+    document.title = `${partnerOne} & ${partnerTwo} — Luxury Royal Wedding Invitation`;
   }, [partnerOne, partnerTwo]);
 
   return (

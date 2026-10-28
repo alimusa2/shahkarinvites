@@ -9,10 +9,10 @@ interface BrownWaxSealProps {
 }
 
 export const BrownWaxSeal: React.FC<BrownWaxSealProps> = ({
-  label = 'Open Invitation',
+  label = 'Open Wedding Invitation',
   onClick,
   size = 64,
-  initials = 'Y&M',
+  initials = 'A&Z',
   className = '',
 }) => {
   return (
